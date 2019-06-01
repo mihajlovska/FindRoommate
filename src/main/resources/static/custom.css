@@ -1,6 +1,5 @@
 .jumbotron {
-	background: linear-gradient(45deg, rgb(13, 74, 77) 0%, rgb(0, 41, 48)
-		100%);
+	background: linear-gradient(45deg, #212529 0%, #545b62eb 100%);
 	position: relative;
 	color: rgb(255, 255, 255);
 	text-align: center;

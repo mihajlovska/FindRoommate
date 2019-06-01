@@ -4,6 +4,9 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppUserForm {
 
 	private Long userId;
@@ -16,6 +19,7 @@ public class AppUserForm {
 	private String role;
 	private String signInProvider;
 	private String providerUserId;
+	private String interest;
 
 	public AppUserForm() {
 
@@ -106,4 +110,11 @@ public class AppUserForm {
 		this.providerUserId = providerUserId;
 	}
 
+	public String getInterests() {
+		return interest;
+	}
+
+	public void setInterests(String interest) {
+		this.interest = interest;
+	}
 }

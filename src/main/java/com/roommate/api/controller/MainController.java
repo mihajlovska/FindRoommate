@@ -4,11 +4,15 @@ import com.roommate.api.model.AppRole;
 import com.roommate.api.model.AppUser;
 import com.roommate.api.payload.AppUserDAO;
 import com.roommate.api.payload.AppUserForm;
+import com.roommate.api.repository.UserRepository;
 import com.roommate.api.utils.SecurityUtil;
 import com.roommate.api.utils.WebUtils;
 import com.roommate.api.validator.AppUserValidator;
+import org.elasticsearch.client.Client;
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -24,9 +28,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +52,10 @@ public class MainController {
 
 	@Autowired
 	private AppUserValidator appUserValidator;
+
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder dataBinder) {
@@ -119,6 +129,26 @@ public class MainController {
 		return "loginPage";
 	}
 
+	@RequestMapping(value = { "/welcomeAuthenticated" }, method = RequestMethod.GET)
+	public String welcomeAuthenticated(Model model) {
+		String username =  SecurityContextHolder.getContext().getAuthentication().getName();
+		AppUser registered = appUserDAO.findAppUserByUserName(username);
+
+		String[] userInterests= registered.getInterest().split(",");
+		List<AppUser> allUsers = userRepository.findAll();
+		ArrayList<AppUser> matchUsers = new ArrayList<>();
+		for (String userInterest : userInterests) {
+			for (int i = 0; i < allUsers.size(); i++) {
+				AppUser user = allUsers.get(i);
+
+				if(user.getInterest().contains(userInterest) && !user.getUserId().equals(registered.getUserId()) && !matchUsers.contains(user)){
+					matchUsers.add(user);
+				}
+			}
+		}
+		return "welcomePageAuthenticatedUser";
+	}
+
 	@RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
 	public String signInPage(Model model) {
 		return "redirect:/login";
@@ -141,10 +171,10 @@ public class MainController {
 
 	@RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
 	public String signupSave(WebRequest request, //
-                             Model model, //
-                             @ModelAttribute("myForm") @Validated AppUserForm appUserForm, //
-                             BindingResult result, //
-                             final RedirectAttributes redirectAttributes) {
+								   Model model, //
+								   @ModelAttribute("myForm") @Validated AppUserForm appUserForm, //
+								   BindingResult result, //
+								   final RedirectAttributes redirectAttributes) throws IOException {
 
 		// Validation error.
 		if (result.hasErrors()) {
@@ -169,9 +199,7 @@ public class MainController {
 					= new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
 			providerSignInUtils.doPostSignUp(registered.getUserName(), request);
 		}
-
 		SecurityUtil.logInUser(registered, roleNames);
-
-		return "redirect:/userInfo";
+		return "redirect:/welcomeAuthenticated";
 	}
 }

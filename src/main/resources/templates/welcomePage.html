@@ -13,23 +13,23 @@
 	  	<link rel="stylesheet" href="custom.css">
 	</head>
 	<body>
+        <div>
+            <th:block th:include="/_menu"></th:block>
+        </div>
 		<div class="jumbotron jumbotron-fluid">
-	  		<div class="container">
-	    		<h1>Social Media Login</h1>      
-	    		<p>Social media login example. You can login by using Google, Facebook, Twitter and Linked In. <br/>All type of logins are more secured by using OAuth2.</p>
+            <div class="container">
+	    		<h1>Find a roommate</h1>
 	  		</div>
 		</div>
+        <div>
+            <img src="./roommate-banner.jpg"/>
+        </div>
 		<div class="container">
 		
-			<th:block th:include="/_menu"></th:block>  
-		
-  					<div class="row">
-  					
-  					<div class="col-sm-12">
-  						<h2 th:utext="${message}"></h2>
-  					</div>
-  						
-  				</div>
+
+            <div class="row">
+                <a class="btn btn-outline-warning btn-lg btn-block" th:href="@{/welcomeAuthenticated}"> CLICK AND FIND YOUR ROOMMATE</a>
+            </div>
 		</div>
 	</body>
 </html>

@@ -5,6 +5,8 @@ import com.roommate.api.payload.AppUserDAO;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 
+import java.io.IOException;
+
 public class ConnectionSignUpImpl implements ConnectionSignUp {
 
 	private AppUserDAO appUserDAO;
@@ -19,7 +21,13 @@ public class ConnectionSignUpImpl implements ConnectionSignUp {
 	@Override
 	public String execute(Connection<?> connection) {
 
-		AppUser account = appUserDAO.createAppUser(connection);
+		AppUser account = null;
+		try {
+			account = appUserDAO.createAppUser(connection);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		assert account != null;
 		return account.getUserName();
 	}
 

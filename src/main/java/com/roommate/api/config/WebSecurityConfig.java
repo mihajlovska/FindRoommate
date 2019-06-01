@@ -25,14 +25,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+		http.authorizeRequests().antMatchers("/",
+				"/error",
+				"/favicon.ico",
+				"/**/*.png",
+				"/**/*.gif",
+				"/**/*.svg",
+				"/**/*.jpg",
+				"/**/*.html",
+				"/**/*.css",
+				"/**/*.js").permitAll();
 		http.authorizeRequests().antMatchers("/", "/signup", "/login", "/logout").permitAll();
 		http.authorizeRequests().antMatchers("/userInfo").access("hasRole('" + AppRole.ROLE_USER + "')");
 		http.authorizeRequests().antMatchers("/admin").access("hasRole('" + AppRole.ROLE_ADMIN + "')");
+		http.authorizeRequests().antMatchers("/welcomeAuthenticated").access("hasRole('" + AppRole.ROLE_USER + "')");
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 		http.authorizeRequests().and().formLogin()
 				.loginProcessingUrl("/j_spring_security_check") 
 				.loginPage("/login")
-				.defaultSuccessUrl("/userInfo")
+				.defaultSuccessUrl("/welcomeAuthenticated")
 				.failureUrl("/login?error=true")
 				.usernameParameter("username")
 				.passwordParameter("password");

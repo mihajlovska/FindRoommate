@@ -2,7 +2,11 @@ package com.roommate.api.payload;
 
 import com.roommate.api.model.AppRole;
 import com.roommate.api.model.AppUser;
+import com.roommate.api.repository.UserRepository;
 import com.roommate.api.utils.EncrytedPasswordUtils;
+import org.apache.catalina.User;
+import org.elasticsearch.client.Client;
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
@@ -13,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,13 +25,18 @@ import java.util.UUID;
 
 @Repository
 @Transactional
-public class AppUserDAO {
+public class AppUserDAO{
+	@Autowired
+	Client client;
 
 	@Autowired
 	private EntityManager entityManager;
 
 	@Autowired
 	private AppRoleDAO appRoleDAO;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	public AppUser findAppUserByUserId(Long userId) {
 		try {
@@ -77,9 +87,13 @@ public class AppUserDAO {
 	            }
 	        }
 	    }
+
+	    public AppUser findAppUserByInterests(String interest){
+			return userRepository.findAppUserByInterest(interest);
+		}
 	 
 	// Auto create App User Account.
-	    public AppUser createAppUser(Connection<?> connection) {
+	    public AppUser createAppUser(Connection<?> connection) throws IOException {
 	        ConnectionKey key = connection.getKey();
 	        System.out.println("key= (" + key.getProviderId() + "," + key.getProviderUserId() + ")");
 	        UserProfile userProfile = connection.fetchUserProfile();
@@ -102,6 +116,14 @@ public class AppUserDAO {
 	        appUser.setFirstName(userProfile.getFirstName());
 	        appUser.setLastName(userProfile.getLastName());
 	        this.entityManager.persist(appUser);
+			client.prepareIndex("users", "roommates", appUser.getUserId().toString())
+					.setSource(jsonBuilder()
+							.startObject()
+							.field("FirstName", appUser.getFirstName())
+							.field("LastName", appUser.getLastName())
+							.field("Username",appUser.getUserName())
+							.endObject()
+					);
 	        // Create default Role
 	        List<String> roleNames = new ArrayList<String>();
 	        roleNames.add(AppRole.ROLE_USER);
@@ -110,16 +132,25 @@ public class AppUserDAO {
 	        return appUser;
 	    }
 	    
-	    public AppUser registerNewUserAccount(AppUserForm appUserForm, List<String> roleNames) {
+	    public AppUser registerNewUserAccount(AppUserForm appUserForm, List<String> roleNames) throws IOException {
 	        AppUser appUser = new AppUser();
 	        appUser.setUserName(appUserForm.getUserName());
 	        appUser.setEmail(appUserForm.getEmail());
 	        appUser.setFirstName(appUserForm.getFirstName());
 	        appUser.setLastName(appUserForm.getLastName());
 	        appUser.setEnabled(true);
+	        appUser.setInterests(appUserForm.getInterests());
 	        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
 	        appUser.setEncrytedPassword("{bcrypt}"+encrytedPassword);
 	        this.entityManager.persist(appUser);
+	        client.prepareIndex("users", "roommates", appUser.getUserId().toString())
+				.setSource(jsonBuilder()
+						.startObject()
+						.field("FirstName", appUser.getFirstName())
+						.field("LastName", appUser.getLastName())
+						.field("Username",appUser.getUserName())
+						.endObject()
+				);
 	        this.entityManager.flush();
 	  
 	        this.appRoleDAO.createRoleFor(appUser, roleNames);

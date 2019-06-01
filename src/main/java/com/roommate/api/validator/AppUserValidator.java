@@ -34,6 +34,8 @@ public class AppUserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "", "First name is required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "", "Last name is required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Password is required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "interests", "", "Interests are required");
+
 
 		if (errors.hasErrors()) {
 			return;
