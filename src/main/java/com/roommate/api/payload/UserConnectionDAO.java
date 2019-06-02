@@ -20,10 +20,10 @@ public class UserConnectionDAO {
 	public UserConnection findUserConnectionByUserProviderId(String userProviderId) {
 		try {
 			String sql = "Select e from " + UserConnection.class.getName() + " e " //
-					+ " Where e.userProviderId = :userProviderId ";
+					+ " Where e.providerUserId = :providerUserId ";
 
 			Query query = entityManager.createQuery(sql, UserConnection.class);
-			query.setParameter("userProviderId", userProviderId);
+			query.setParameter("providerUserId", userProviderId);
 
 			@SuppressWarnings("unchecked")
 			List<UserConnection> list = query.getResultList();

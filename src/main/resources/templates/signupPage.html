@@ -13,11 +13,10 @@
 	  	<link rel="stylesheet" href="custom.css">
 	</head>
 	<body>
+		<div>
+			<th:block th:include="/_menu"></th:block>
+		</div>
 		<div class="jumbotron jumbotron-fluid">
-	  		<div class="container">
-	    		<h1>Social Media Login</h1>      
-	    		<p>Social media login example. You can login by using Google, Facebook, Twitter and Linked In. <br/>All type of logins are more secured by using OAuth2.</p>
-	  		</div>
 		</div>
 		<div class="container">
   					<div class="row">
@@ -30,8 +29,9 @@
   						<div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">
   						</div>
   						<form th:object="${myForm}" method="POST">		
-  							  <input type="hidden" th:field="*{userId}"  />
-         						<input type="hidden" th:field="*{signInProvider}" />
+							<input type="hidden" th:field="*{userId}"  />
+							<input type="hidden" th:field="*{signInProvider}" />
+							<input type="hidden" th:field="*{providerUserId}" />
 
   						 	<div class="form-group">
 							    <label for="firstName">First Name:</label>

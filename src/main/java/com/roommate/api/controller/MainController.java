@@ -2,8 +2,10 @@ package com.roommate.api.controller;
 
 import com.roommate.api.model.AppRole;
 import com.roommate.api.model.AppUser;
+import com.roommate.api.model.UserConnection;
 import com.roommate.api.payload.AppUserDAO;
 import com.roommate.api.payload.AppUserForm;
+import com.roommate.api.payload.UserConnectionDAO;
 import com.roommate.api.repository.UserRepository;
 import com.roommate.api.utils.SecurityUtil;
 import com.roommate.api.utils.WebUtils;
@@ -25,12 +27,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.swing.text.html.parser.Parser;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.Principal;
@@ -56,6 +61,9 @@ public class MainController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserConnectionDAO userConnectionDAO;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder dataBinder) {
@@ -95,14 +103,11 @@ public class MainController {
 		return "logoutSuccessfulPage";
 	}*/
 
-	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
-	public String userInfo(Model model, Principal principal) {
-		String userName = principal.getName();
-		System.out.println("User Name: " + userName);
-		UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
-		String userInfo = WebUtils.toString(loginedUser);
-		model.addAttribute("userInfo", userInfo);
-		return "userInfoPage";
+	@RequestMapping(value = "/userProfile/{userId}", method = RequestMethod.GET)
+	public String userInfo(@PathVariable Long userId, Model model) {
+		AppUser user = appUserDAO.findAppUserByUserId(userId);
+		model.addAttribute("user", user);
+		return "userProfile";
 	}
 
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
@@ -130,24 +135,35 @@ public class MainController {
 	}
 
 	@RequestMapping(value = { "/welcomeAuthenticated" }, method = RequestMethod.GET)
-	public String welcomeAuthenticated(Model model) {
+	public String welcomeAuthenticated(Model model,@RequestParam(required = false) String keyword) {
 		String username =  SecurityContextHolder.getContext().getAuthentication().getName();
 		AppUser registered = appUserDAO.findAppUserByUserName(username);
-
+		model.addAttribute("registeredUser",registered);
 		String[] userInterests= registered.getInterest().split(",");
 		List<AppUser> allUsers = userRepository.findAll();
 		ArrayList<AppUser> matchUsers = new ArrayList<>();
-		for (String userInterest : userInterests) {
-			for (int i = 0; i < allUsers.size(); i++) {
-				AppUser user = allUsers.get(i);
 
-				if(user.getInterest().contains(userInterest) && !user.getUserId().equals(registered.getUserId()) && !matchUsers.contains(user)){
-					matchUsers.add(user);
+		if(keyword == null){
+			for (String userInterest : userInterests) {
+				for (int i = 0; i < allUsers.size(); i++) {
+					AppUser user = allUsers.get(i);
+					if(user.getInterest().contains(userInterest) && !user.getUserId().equals(registered.getUserId()) && !matchUsers.contains(user)){
+						UserConnection userConnection = userConnectionDAO.findUserConnectionByUserProviderId(user.getUserProviderID());
+						user.setUserImage(userConnection.getImageUrl());
+						matchUsers.add(user);
+					}
 				}
 			}
+			model.addAttribute("users",matchUsers);
+			return "welcomePageAuthenticatedUser";
 		}
+
+		model.addAttribute("users",appUserDAO.findAppUserByFirstName(keyword));
 		return "welcomePageAuthenticatedUser";
+
+
 	}
+
 
 	@RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
 	public String signInPage(Model model) {
@@ -202,4 +218,5 @@ public class MainController {
 		SecurityUtil.logInUser(registered, roleNames);
 		return "redirect:/welcomeAuthenticated";
 	}
+
 }

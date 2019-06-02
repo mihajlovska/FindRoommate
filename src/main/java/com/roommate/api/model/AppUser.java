@@ -39,6 +39,9 @@ public class AppUser {
 	@Column(name="Interest",nullable = false)
 	private String interest;
 
+	private String userProviderID;
+	private String userImage;
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -103,4 +106,19 @@ public class AppUser {
 		this.interest = interest;
 	}
 
+	public String getUserProviderID() {
+		return userProviderID;
+	}
+
+	public void setUserProviderID(String userProviderID) {
+		this.userProviderID = userProviderID;
+	}
+
+	public String getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
+	}
 }

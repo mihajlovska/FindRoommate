@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.IntStream;
 
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -58,7 +59,7 @@ public class UserController {
         return getResponse.getSource();
     }
     @GetMapping("/view/name/{field}")
-    public Map<String, Object> searchByName(@PathVariable final String field) {
+    public List<SearchHit> searchByName(@PathVariable final String field) {
         Map<String,Object> map = null;
         SearchResponse response = client.prepareSearch("users")
                 .setTypes("roommates")
@@ -66,9 +67,8 @@ public class UserController {
                 .setQuery(QueryBuilders.matchQuery("FirstName", field))
                 .get()
                 ;
-        List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());
-        map =   searchHits.get(0).getSource();
-        return map;
+        List<SearchHit> test = Arrays.asList(response.getHits().getHits());
+        return Arrays.asList(response.getHits().getHits());
 
     }
 
@@ -101,4 +101,5 @@ public class UserController {
         System.out.println(deleteResponse.getResult().toString());
         return deleteResponse.getResult().toString();
     }
+
 }

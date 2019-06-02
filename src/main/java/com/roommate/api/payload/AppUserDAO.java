@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
+import org.springframework.social.facebook.api.impl.TestUserTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -88,8 +89,8 @@ public class AppUserDAO{
 	        }
 	    }
 
-	    public AppUser findAppUserByInterests(String interest){
-			return userRepository.findAppUserByInterest(interest);
+	    public List<AppUser> findAppUserByFirstName(String firstName){
+			return userRepository.findAppUserByFirstNameIgnoreCaseContaining(firstName);
 		}
 	 
 	// Auto create App User Account.
@@ -140,6 +141,7 @@ public class AppUserDAO{
 	        appUser.setLastName(appUserForm.getLastName());
 	        appUser.setEnabled(true);
 	        appUser.setInterests(appUserForm.getInterests());
+	        appUser.setUserProviderID(appUserForm.getProviderUserId());
 	        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
 	        appUser.setEncrytedPassword("{bcrypt}"+encrytedPassword);
 	        this.entityManager.persist(appUser);

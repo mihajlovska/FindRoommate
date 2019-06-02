@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Social Media Login Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/custom.css">
+    <!--<style>-->
+        <!--.jumbotron {-->
+            <!--position: relative;-->
+            <!--text-align: center;-->
+            <!--text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 3px, rgba(0, 0, 0, 0.075) 0px 0px 30px;-->
+            <!--box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 7px inset, rgba(0, 0, 0, 0.2) 0px -3px 7px inset;-->
+            <!--padding: 266px 26px;-->
+            <!--background-image: ./roommate-banner.jpg;-->
+            <!--background-repeat: no-repeat;-->
+            <!--background-image: url(./roommate-banner.jpg);-->
+            <!--background-size: cover;-->
+        <!--}-->
+
+        <!--hr {-->
+            <!--border: none;-->
+            <!--border-left: 1px solid hsla(200, 10%, 50%, 100);-->
+            <!--height: 23vh;-->
+            <!--width: 1px;-->
+        <!--}-->
+
+        <!--.customBtn {-->
+            <!--color: rgb(255, 255, 255);-->
+            <!--width: 280px;-->
+            <!--text-align: center;-->
+            <!--margin-top: 15px;-->
+        <!--}-->
+
+        <!--.width42px {-->
+            <!--width: 42px;-->
+        <!--}-->
+    <!--</style>-->
+</head>
+<body style="font-family: initial;">
+<div>
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background: #FFAF42!important"
+         xmlns:th="http://www.thymeleaf.org" th:object="${user}">
+        <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Home</a></li>
+            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">About Us</a></li>
+            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Pricing</a></li>
+            <li class="nav-item active"><a class="nav-link" th:href="@{'/userProfile' +'/' + ${user.userId}}">My Profile</a></li>
+            <li class="nav-item active"><a class="nav-link" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav></div>
+<div class="jumbotron jumbotron-fluid">
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5" th:object="${user}">
+            <div class="card" >
+                <div class="row ">
+                    <div style="display: flex;flex-direction: column;margin: 0 auto;">
+                        <img th:src="${user.userImage}+'?height=250&width=250'">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-block">
+                            <br>
+                            <a >
+                                <h5 class="card-title" th:text="${user.FirstName} + ' ' + ${user.LastName} " style="text-align: center"></h5>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <h1 style="text-align: center">Account Info</h1>
+            <div class="row mt-5 ml-4">
+                <h4>Email:  </h4>
+                <h5 class="ml-2" th:text="${user.email}"></h5>
+            </div>
+            <div class="row mt-5 ml-4">
+                <h4>Interests:  </h4>
+                <h5 class="ml-2" th:text="${user.interest}"></h5>
+            </div>
+            <button class="btn btn-secondary btn-lg btn-block mt-5">Contact me</button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
