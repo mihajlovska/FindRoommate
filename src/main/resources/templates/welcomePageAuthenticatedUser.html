@@ -52,7 +52,9 @@
                             <a th:href="@{'/userProfile' +'/' + ${user.userId}}">
                                 <h5 class="card-title" th:text="${user.FirstName} + ' ' + ${user.LastName} " style="text-align: center"></h5>
                             </a>
-                            <p class="card-text" style="text-align: center">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <a th:href="@{'/contact' +'/' + ${user.userId}}">
+                                <button class="btn btn-secondary btn-lg btn-block mt-5">Contact me</button>
+                            </a>
                         </div>
                     </div>
                 </div>

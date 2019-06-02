@@ -219,4 +219,11 @@ public class MainController {
 		return "redirect:/welcomeAuthenticated";
 	}
 
+	@RequestMapping(value = "/contact/{userId}")
+	public String contact(@PathVariable Long userId,Model model){
+		AppUser user = appUserDAO.findAppUserByUserId(userId);
+		model.addAttribute("user", user);
+		return "contactMe";
+	}
+
 }
