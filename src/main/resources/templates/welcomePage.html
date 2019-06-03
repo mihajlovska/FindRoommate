@@ -19,9 +19,50 @@
 		<div class="jumbotron jumbotron-fluid">
 		</div>
 		<div class="container">
-            <div class="row">
-                <a class="btn btn-outline-warning btn-lg btn-block" th:href="@{/welcomeAuthenticated}"> CLICK AND FIND YOUR ROOMMATE</a>
-            </div>
+			<div class="col-xs-12 mb-5">
+				<h2 class="text-center">What will you get with <b>Find a Roommate</b> services</h2>
+			</div>
+			<div class="row col-sm-12 mt-5 offset-1">
+				<div class="col-sm-3 text-center mr-5">
+					<img src="./people.png" style="width: 30%;">
+					<p style="font-size:larger;">With our application you can search people and find roommate for the next destination you want to visit. </p>
+				</div>
+				<div class="col-sm-3 text-center mr-5">
+					<img src="./connect.png" style="width: 30%;">
+					<p style="font-size:larger;">Register to our application and we can find you a roommate! This looks ridiculous to you? Join us and you will find out what we are talking about. </p>
+				</div>
+				<div class="col-sm-3 text-center">
+					<img src="./services.png" style="width: 30%;">
+					<p style="font-size:larger;">If you want to have more chances for recommended people you can subscribe to our service and enjoy more favours! </p>
+				</div>
+			</div>
+
+			<div class="mt-5 mb-5">
+				<hr>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<img style="width: inherit;" src="./friends.jpg"/>
+				</div>
+				<div class="col-sm-5">
+					<p style="font-size:larger;">With our application you can search people and find roommate for the next destination you want to visit.Register to our application and we can find you a roommate! </p>
+					<div class="row">
+						<a class="btn btn-danger btn-lg" th:href="@{/welcomeAuthenticated}"> CLICK AND FIND YOUR ROOMMATE</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-5">
+					<p style="font-size:larger;">This looks ridiculous to you? Join us and you will find out what we are talking about.If you want to have more chances for recommended people you can subscribe to our service and enjoy more favours! </p>
+				</div>
+				<div class="col-sm-6" style="margin-left: 64px;">
+					<img style="width: inherit;" src="./person_device.jpg"/>
+				</div>
+			</div>
+		</div>
+		<div class="mt-1" style="height: 70px; background-color:gray;">
+
 		</div>
 	</body>
 </html>

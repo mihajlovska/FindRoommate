@@ -14,17 +14,16 @@
 </head>
 <body>
 <div>
-    <nav class="navbar navbar-expand-sm navbar-dark" style="background: #FFAF42!important"
-         xmlns:th="http://www.thymeleaf.org" th:object="${registeredUser}">
-        <ul class="navbar-nav">
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Home</a>
-            </li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">About Us</a></li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Pricing</a></li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{'/userProfile' +'/' + ${registeredUser.userId}}">My Profile</a></li>
-            <li class="nav-item active"><a class="nav-link"
-                th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
-            </li>
+    <nav class="navbar navbar-expand-lg navbar-light"
+         xmlns:th="http://www.thymeleaf.org">
+        <ul class="navbar-nav offset-3">
+            <img src="./logo2.png"/>
+            <a class="nav-item nav-link mt-4 mr-4 ml-4" th:href="@{/}" style="font-size: x-large;">Home</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:href="@{/}" style="font-size: x-large;">About Us</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:href="@{/}" style="font-size: x-large;">Pricing</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:if="${#request.userPrincipal == null}" th:href="@{/login}" style="font-size: x-large;">Sign in</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:href="@{'/userProfile' +'/' + ${registeredUser.userId}}" style="font-size: x-large;">My Profile</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:if="${#request.userPrincipal != null}" th:href="@{/logout}" style="font-size: x-large;">Logout</a>
         </ul>
     </nav>
 </div>
@@ -33,11 +32,7 @@
 <div class="container">
 
     <div class="col-sm-12">
-        <h1 style="text-align:center">Search for your roommate</h1>
-            <form th:action="@{/welcomeAuthenticated}" method="get" class="row offset-3 mt-4">
-                <input class="form-control col-lg-8" type="text" placeholder="Enter Your Roommate Name" aria-label="Search" name="keyword">
-                <button type="submit" class="btn btn-secondary ml-2">GO</button>
-            </form>
+        <h1 style="text-align:center">Recommended roommates for you</h1>
     </div>
     <div class="card-deck mt-5">
      <div class="col-sm-4" th:each="user:${users}">
@@ -49,11 +44,11 @@
                     <div class="col-md-8">
                         <div class="card-block">
                             <br>
-                            <a th:href="@{'/userProfile' +'/' + ${user.userId}}">
+                            <a th:href="@{'/userProfile' +'/' + ${user.userId}}" style="text-decoration: none;color: gray;">
                                 <h5 class="card-title" th:text="${user.FirstName} + ' ' + ${user.LastName} " style="text-align: center"></h5>
                             </a>
-                            <a th:href="@{'/contact' +'/' + ${user.userId}}">
-                                <button class="btn btn-secondary btn-lg btn-block mt-5">Contact me</button>
+                            <a th:href="@{'/contact' +'/' + ${user.userId}}" style="text-decoration: none;">
+                                <button class="btn btn-danger btn-block mt-5 ml-5 mb-5">Contact me</button>
                             </a>
                         </div>
                     </div>
@@ -62,6 +57,16 @@
             <br>
         </div>
     </div>
+    <div class="mb-5">
+        <h2 style="text-align:center">Or you can always search your roommate</h2>
+        <h4 class="text-center">just you need to enter your next destination</h4>
+        <form th:action="@{/welcomeAuthenticated}" method="get" class="row offset-3 mt-4">
+            <input class="form-control col-lg-8" type="text" placeholder="Enter Location..." aria-label="Search" name="keyword">
+            <button type="submit" class="btn btn-outline-danger ml-2">GO</button>
+        </form>
+    </div>
+</div>
+<div class="mt-1" style="height: 70px; background-color:gray;">
 
 </div>
 </body>

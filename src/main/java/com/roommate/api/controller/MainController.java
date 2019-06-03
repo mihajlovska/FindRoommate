@@ -12,6 +12,7 @@ import com.roommate.api.utils.WebUtils;
 import com.roommate.api.validator.AppUserValidator;
 import org.elasticsearch.client.Client;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+import org.elasticsearch.search.suggest.completion2x.context.GeolocationContextMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -214,7 +215,9 @@ public class MainController {
 			ProviderSignInUtils providerSignInUtils //
 					= new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
 			providerSignInUtils.doPostSignUp(registered.getUserName(), request);
+
 		}
+
 		SecurityUtil.logInUser(registered, roleNames);
 		return "redirect:/welcomeAuthenticated";
 	}

@@ -2,6 +2,7 @@ package com.roommate.api.payload;
 
 import com.roommate.api.model.AppRole;
 import com.roommate.api.model.AppUser;
+import com.roommate.api.model.UserConnection;
 import com.roommate.api.repository.UserRepository;
 import com.roommate.api.utils.EncrytedPasswordUtils;
 import org.apache.catalina.User;
@@ -38,6 +39,9 @@ public class AppUserDAO{
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserConnectionDAO userConnectionDAO;
 
 	public AppUser findAppUserByUserId(Long userId) {
 		try {
@@ -144,8 +148,8 @@ public class AppUserDAO{
 	        appUser.setUserProviderID(appUserForm.getProviderUserId());
 	        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
 	        appUser.setEncrytedPassword("{bcrypt}"+encrytedPassword);
-	        this.entityManager.persist(appUser);
-	        client.prepareIndex("users", "roommates", appUser.getUserId().toString())
+			this.entityManager.persist(appUser);
+			client.prepareIndex("users", "roommates", appUser.getUserId().toString())
 				.setSource(jsonBuilder()
 						.startObject()
 						.field("FirstName", appUser.getFirstName())

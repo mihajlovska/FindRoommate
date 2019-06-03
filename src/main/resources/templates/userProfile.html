@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="static/custom.css">
+    <link rel="stylesheet" href="custom.css">
     <style>
         .jumbotron {
             position: relative;
@@ -18,9 +18,8 @@
             text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 3px, rgba(0, 0, 0, 0.075) 0px 0px 30px;
             box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 7px inset, rgba(0, 0, 0, 0.2) 0px -3px 7px inset;
             padding: 266px 26px;
-            background-image: ./roommate-banner.jpg;
             background-repeat: no-repeat;
-            background-image: url(./roommate-banner.jpg);
+            background-image: url(/../banner_to_be.jpg);
             background-size: cover;
         }
 
@@ -45,16 +44,19 @@
 </head>
 <body style="font-family: initial;">
 <div>
-    <nav class="navbar navbar-expand-sm navbar-dark" style="background: #FFAF42!important"
-         xmlns:th="http://www.thymeleaf.org" th:object="${user}">
-        <ul class="navbar-nav">
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Home</a></li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">About Us</a></li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{/welcomeAuthenticated}">Pricing</a></li>
-            <li class="nav-item active"><a class="nav-link" th:href="@{'/userProfile' +'/' + ${user.userId}}">My Profile</a></li>
-            <li class="nav-item active"><a class="nav-link" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
+    <nav class="navbar navbar-expand-lg navbar-light"
+         xmlns:th="http://www.thymeleaf.org">
+        <ul class="navbar-nav offset-3">
+            <img src="/../logo2.png"/>
+            <a class="nav-item nav-link mt-4 mr-4 ml-4" th:href="@{/}" style="font-size: x-large;">Home</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:href="@{/}" style="font-size: x-large;">About Us</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:href="@{/}" style="font-size: x-large;">Pricing</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:if="${#request.userPrincipal == null}" th:href="@{/login}" style="font-size: x-large;">Sign in</a>
+            <a class="nav-item nav-link mt-4 mr-4" href="#" style="font-size: x-large;">My Profile</a>
+            <a class="nav-item nav-link mt-4 mr-4" th:if="${#request.userPrincipal != null}" th:href="@{/logout}" style="font-size: x-large;">Logout</a>
         </ul>
-    </nav></div>
+    </nav>
+</div>
 <div class="jumbotron jumbotron-fluid">
 </div>
 <div class="container">
@@ -88,6 +90,8 @@
             </div>
         </div>
     </div>
+</div>
+<div class="mt-1" style="height: 70px; background-color:gray;">
 
 </div>
 </body>
