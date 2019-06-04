@@ -39,8 +39,18 @@ public class AppUser {
 	@Column(name="Interest",nullable = false)
 	private String interest;
 
+	@Column(name="Current_Location")
+	private String currentLocation;
+
+	@Column(name = "Next_Destination")
+	private String nextDestination;
+
+	@Column(name = "Education")
+	private String education;
+
 	private String userProviderID;
 	private String userImage;
+
 
 	public Long getUserId() {
 		return userId;
@@ -120,5 +130,29 @@ public class AppUser {
 
 	public void setUserImage(String userImage) {
 		this.userImage = userImage;
+	}
+
+	public String getCurrentLocation() {
+		return currentLocation;
+	}
+
+	public void setCurrentLocation(String currentLocation) {
+		this.currentLocation = currentLocation;
+	}
+
+	public String getNextDestination() {
+		return nextDestination;
+	}
+
+	public void setNextDestination(String nextDestination) {
+		this.nextDestination = nextDestination;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
 	}
 }

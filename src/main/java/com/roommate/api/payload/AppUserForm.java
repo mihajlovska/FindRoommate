@@ -4,9 +4,6 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AppUserForm {
 
 	private Long userId;
@@ -20,6 +17,9 @@ public class AppUserForm {
 	private String signInProvider;
 	private String providerUserId;
 	private String interest;
+	private String education;
+	private String currentLocation;
+	private String nextDestination;
 
 	public AppUserForm() {
 
@@ -116,5 +116,29 @@ public class AppUserForm {
 
 	public void setInterests(String interest) {
 		this.interest = interest;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	public String getCurrentLocation() {
+		return currentLocation;
+	}
+
+	public void setCurrentLocation(String currentLocation) {
+		this.currentLocation = currentLocation;
+	}
+
+	public String getNextDestination() {
+		return nextDestination;
+	}
+
+	public void setNextDestination(String nextDestination) {
+		this.nextDestination = nextDestination;
 	}
 }

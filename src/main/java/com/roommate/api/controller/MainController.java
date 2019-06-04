@@ -144,24 +144,21 @@ public class MainController {
 		List<AppUser> allUsers = userRepository.findAll();
 		ArrayList<AppUser> matchUsers = new ArrayList<>();
 
-		if(keyword == null){
-			for (String userInterest : userInterests) {
-				for (int i = 0; i < allUsers.size(); i++) {
-					AppUser user = allUsers.get(i);
-					if(user.getInterest().contains(userInterest) && !user.getUserId().equals(registered.getUserId()) && !matchUsers.contains(user)){
-						UserConnection userConnection = userConnectionDAO.findUserConnectionByUserProviderId(user.getUserProviderID());
-						user.setUserImage(userConnection.getImageUrl());
-						matchUsers.add(user);
-					}
+		for (String userInterest : userInterests) {
+			for (AppUser user : allUsers) {
+				if (user.getInterest().contains(userInterest) && !user.getUserId().equals(registered.getUserId()) && !matchUsers.contains(user)) {
+					UserConnection userConnection = userConnectionDAO.findUserConnectionByUserProviderId(user.getUserProviderID());
+					user.setUserImage(userConnection.getImageUrl());
+					matchUsers.add(user);
 				}
 			}
-			model.addAttribute("users",matchUsers);
-			return "welcomePageAuthenticatedUser";
 		}
 
-		model.addAttribute("users",appUserDAO.findAppUserByFirstName(keyword));
+		model.addAttribute("users",matchUsers);
+		if(keyword != null){
+			model.addAttribute("searchedUsers",userRepository.findAppUserByNextDestinationIgnoreCaseContaining(keyword));
+		}
 		return "welcomePageAuthenticatedUser";
-
 
 	}
 

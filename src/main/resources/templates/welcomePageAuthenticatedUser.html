@@ -41,12 +41,16 @@
                     <div style="display: flex;flex-direction: column;margin: 0 auto;">
                         <img th:src="${user.userImage}+'?height=250&width=250'">
                     </div>
-                    <div class="col-md-8">
-                        <div class="card-block">
+                    <div>
+                        <div class="card-block" style="padding-left:30px;">
                             <br>
                             <a th:href="@{'/userProfile' +'/' + ${user.userId}}" style="text-decoration: none;color: gray;">
                                 <h5 class="card-title" th:text="${user.FirstName} + ' ' + ${user.LastName} " style="text-align: center"></h5>
                             </a>
+                            <p><b>Current Location:</b></p>
+                            <p th:text="${user.currentLocation}"></p>
+                            <p><b>Education:</b></p>
+                            <p th:text="${user.education}"></p>
                             <a th:href="@{'/contact' +'/' + ${user.userId}}" style="text-decoration: none;">
                                 <button class="btn btn-danger btn-block mt-5 ml-5 mb-5">Contact me</button>
                             </a>
@@ -64,6 +68,33 @@
             <input class="form-control col-lg-8" type="text" placeholder="Enter Location..." aria-label="Search" name="keyword">
             <button type="submit" class="btn btn-outline-danger ml-2">GO</button>
         </form>
+        <div class="card-deck mt-5">
+            <div class="col-sm-4" th:each="user:${searchedUsers}">
+                <div class="card" >
+                    <div class="row ">
+                        <div style="display: flex;flex-direction: column;margin: 0 auto;">
+                            <img th:src="${user.userImage}+'?height=250&width=250'">
+                        </div>
+                        <div>
+                            <div class="card-block" style="padding-left:30px;">
+                                <br>
+                                <a th:href="@{'/userProfile' +'/' + ${user.userId}}" style="text-decoration: none;color: gray;">
+                                    <h5 class="card-title" th:text="${user.FirstName} + ' ' + ${user.LastName} " style="text-align: center"></h5>
+                                </a>
+                                <p><b>Current Location:</b></p>
+                                <p th:text="${user.currentLocation}"></p>
+                                <p><b>Education:</b></p>
+                                <p th:text="${user.education}"></p>
+                                <a th:href="@{'/contact' +'/' + ${user.userId}}" style="text-decoration: none;">
+                                    <button class="btn btn-danger btn-block mt-5 ml-5 mb-5">Contact me</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
     </div>
 </div>
 <div class="mt-1" style="height: 70px; background-color:gray;">

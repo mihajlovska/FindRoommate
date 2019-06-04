@@ -148,6 +148,9 @@ public class AppUserDAO{
 	        appUser.setUserProviderID(appUserForm.getProviderUserId());
 	        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
 	        appUser.setEncrytedPassword("{bcrypt}"+encrytedPassword);
+	        appUser.setEducation(appUserForm.getEducation());
+	        appUser.setCurrentLocation(appUserForm.getCurrentLocation());
+	        appUser.setNextDestination(appUserForm.getNextDestination());
 			this.entityManager.persist(appUser);
 			client.prepareIndex("users", "roommates", appUser.getUserId().toString())
 				.setSource(jsonBuilder()
